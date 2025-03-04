@@ -184,27 +184,11 @@
 
         <div class="toggle-buttons" style="text-align: left;">
             <button onclick="showReport('sampleReport')">Sample Report</button>
-            <button onclick="showReport('sampleMetrics')">Sample Metrics</button>
         </div>
 
         <div class="report-container" id="sampleReport">
             <h3>Sample Report</h3>
             <iframe title="SampleReport" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiNTk2YTNiMDktYzUyZC00NjVjLTg2YzEtOGQ3NWFiNmU5N2NkIiwidCI6ImFjNzllNWE4LWUwZTQtNDM0Yi1hMjkyLTJjODliNWMyODM2NiIsImMiOjF9" frameborder="0" allowFullScreen="true"></iframe>
-        </div>
-
-        <div class="report-container" id="sampleMetrics">
-            <h3>Sample Metrics</h3>
-                        <object 
-                data="/Portfolio/assets/SampleMetrics.pdf" 
-                type="application/pdf"
-                width="100%" 
-                height="800px">
-                <div class="pdf-fallback">
-                    <p>Your browser does not support PDFs. You can download the PDF here: 
-                        <a href="/Portfolio/assets/SampleMetrics.pdf">Download Sample Metrics PDF</a>
-                    </p>
-                </div>
-            </object>
         </div>
 
         <div class="description" id="descriptionText">
@@ -265,88 +249,18 @@
                     </ul>
                 </li>
                 <li><strong>Findings Directory and Visit Directory:</strong> Lists out all visits and findings.</li>
-            </ul>`,
-            sampleMetrics: `Sample Metrics provides comprehensive performance tracking across different staff roles:
-            <ul>
-                <li><strong>Clinical Time Metrics:</strong> Measures the average number of days it takes staff to respond to findings.</li>
-                <li><strong>Clinical Count Metrics:</strong> Tracks the number of findings issued to each staff member.</li>
-                <li><strong>QC Staff Metrics:</strong> Provides detailed Quality Control Measures for:
-                    <ul>
-                        <li>Findings per Visit</li>
-                        <li>Findings count issued by QC staff</li>
-                        <li>Number of charts checked in</li>
-                        <li>Number of charts QC'd</li>
-                        <li>Percentage of checked-in charts that have been QC'd</li>
-                    </ul>
-                </li>
-                <li><strong>Chart Metrics:</strong> Monitors chart processing timeline:
-                    <ul>
-                        <li>Days between visit date and check-in</li>
-                        <li>Days between check-in and QC completion</li>
-                        <li>Current status counts:
-                            <ul>
-                                <li>Pending check-in</li>
-                                <li>Pending QC</li>
-                                <li>Completed QC</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li><strong>Findings Metrics:</strong> Comprehensive findings tracking:
-                    <ul>
-                        <li>Number of findings per visit</li>
-                        <li>Total findings pending response</li>
-                        <li>Total findings pending verification</li>
-                        <li>Findings trends over time</li>
-                    </ul>
-                </li>
-                <li><strong>Turn Around Time:</strong> QC efficiency metrics:
-                    <ul>
-                        <li>Time from check-in to QC completion</li>
-                        <li>Performance against 3-day target</li>
-                        <li>Average QC completion time</li>
-                        <li>Trending analysis</li>
-                    </ul>
-                </li>
-                <li><strong>CRC Accountability:</strong> Clinical staff performance tracking:
-                    <ul>
-                        <li>Findings per visit over time</li>
-                        <li>Severity breakdown (major/critical)</li>
-                        <li>Individual trending analysis</li>
-                        <li>Response time metrics</li>
-                    </ul>
-                </li>
-                <li><strong>Personal Finding Log:</strong> QC staff performance metrics:
-                    <ul>
-                        <li>Number of findings issued per visit</li>
-                        <li>Chart completion time tracking</li>
-                        <li>Individual productivity metrics</li>
-                        <li>Quality consistency analysis</li>
-                    </ul>
-                </li>
             </ul>`
         };
 
         function showReport(reportId) {
-            // Remove active class from all buttons
-            document.querySelectorAll('.toggle-buttons button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Add active class to clicked button
-            document.querySelector(`.toggle-buttons button[onclick*="${reportId}"]`).classList.add('active');
-            
             // Show/hide containers
-            document.getElementById('sampleReport').style.display = 'none';
-            document.getElementById('sampleMetrics').style.display = 'none';
-            document.getElementById('descriptionText').style.display = 'none';
-            document.getElementById(reportId).style.display = 'block';
+            document.getElementById('sampleReport').style.display = 'block';
             document.getElementById('descriptionText').style.display = 'block';
 
             // Update description
             document.getElementById('reportDescription').innerHTML = descriptions[reportId];
         }
-        // Initialize with sampleReport and active state
+        // Initialize with sampleReport
         showReport('sampleReport');
 
         const calculationsData = {
@@ -576,7 +490,7 @@ RETURN
                 {
                     name: 'ZzWeekofCheckIn',
                     description: 'Categorical variable, group of days by work week.',
-                    dax: `VAR StartOfWeek = 'Checkin'[Check-in Date] - WEEKDAY('Checkin'[Check-in Date], 2) + 1
+                    dax: `VAR StartOfWeek = 'Checkin'[Check-in Date] - WEEKDAY('Check-in'[Check-in Date], 2) + 1
 VAR EndOfWeek = StartOfWeek + 4
 RETURN FORMAT(StartOfWeek, "dd-mmm-yyyy") & " - " & FORMAT(EndOfWeek, "dd-mmm-yyyy")`,
                     isMeasure: false
