@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Francisco Gomez - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="header-component">
+        <!-- Navigation -->
+        <nav class="dark-green p-4 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="#home" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
+                <ul class="flex space-x-6">
+                    <li><a href="#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
+                    <li><a href="#quality-report" class="text-deep-brown hover:text-hunter-green">Quality Report Project</a></li>
+                    <li><a href="#lab-tracking" class="text-deep-brown hover:text-hunter-green">Lab Tracking Project</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Section -->
+        <header class="dark-green p-16 text-center w-full">
+            <div class="container mx-auto max-w-4xl">
+                <img src="./assests/pfp.PNG" alt="Alex Francisco Gomez" class="mx-auto rounded-full w-64 h-64 mb-8 border-4 border-tan object-cover shadow-lg">
+                <h1 class="text-5xl font-bold mb-6 text-deep-brown">Hi, I'm Alex Francisco Gomez</h1>
+                <p class="text-2xl mb-6 text-deep-brown leading-relaxed max-w-2xl mx-auto">I'm a passionate developer with expertise in software engineering, project management, and problem-solving. Welcome to my online portfolio where you can explore my work!</p>
+            </div>
+        </header>
+    </div>
+
+    <script>
+        // Allow this component to be nested in other pages
+        class HeaderComponent extends HTMLElement {
+            connectedCallback() {
+                const content = document.getElementById('header-component').innerHTML;
+                this.innerHTML = content;
+            }
+        }
+        customElements.define('portfolio-header', HeaderComponent);
+    </script>
+</body>
+</html>

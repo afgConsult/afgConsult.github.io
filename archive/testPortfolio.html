@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alex Francisco Gomez Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            text-align: left;
+            padding: 20px 20px 20px 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        .report-container {
+            margin-bottom: 30px;
+            display: none;
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+        .description {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            height: 300px;
+            overflow-y: auto;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .toggle-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .toggle-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        .toggle-buttons button:hover {
+            background-color: #0056b3;
+        }
+        .markdown-container {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .collapsible {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #e0e0e0;
+        }
+
+        .content {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+            background-color: white;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .dax-code {
+            background-color: #f8f8f8;
+            border-left: 3px solid #007BFF;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Consolas', monospace;
+            white-space: pre-wrap;
+        }
+
+        .section-description {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            border-left: 3px solid #28a745;
+        }
+
+        .measure-tag {
+            background-color: #007BFF;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .level-1-collapsible,
+        .level-2-collapsible,
+        .level-3-collapsible {
+            background-color: #f1f1f1;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .level-2-collapsible {
+            background-color: #e6e6e6;
+            margin-left: 20px;
+            width: calc(100% - 20px);
+        }
+
+        .level-3-collapsible {
+            background-color: #dcdcdc;
+            margin-left: 40px;
+            width: calc(100% - 40px);
+        }
+
+        .level-2-content,
+        .level-3-content {
+            display: none;
+            padding: 0 18px;
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .level-2-content {
+            margin-left: 20px;
+        }
+
+        .level-3-content {
+            margin-left: 40px;
+        }
+        .calculation-section {
+            margin-bottom: 20px;
+        }
+        
+        .table-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .table-item {
+            background-color: #f8f9fa;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .calculation-list {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+        
+        .calculation-item {
+            background-color: #fff;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 3px solid #28a745;
+            cursor: pointer;
+        }
+        
+        .dax-content {
+            display: none;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-left: 3px solid #007BFF;
+            margin: 5px 0 5px 20px;
+            font-family: 'Consolas', monospace;
+            white-space: pre-wrap;
+        }
+        
+        .active {
+            background-color: #e9ecef;
+        }
+        
+        .measure-badge {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Alex Francisco Gomez Portfolio</h1>
+    </div>
+
+    <div class="container">
+        <h2>Power BI Reports</h2>
+
+        <div class="toggle-buttons">
+            <button onclick="showReport('sampleReport')">Sample Report</button>
+            <button onclick="showReport('sampleMetrics')">Sample Metrics</button>
+        </div>
+
+        <div class="report-container" id="sampleReport">
+            <h3>Sample Report</h3>
+            <iframe title="SampleReport" src="https://app.powerbi.com/reportEmbed?reportId=5a4add2e-104a-449e-b140-d1937b453bda&autoAuth=true&ctid=ac79e5a8-e0e4-434b-a292-2c89b5c28366" allowFullScreen="true"></iframe>
+        </div>
+
+        <div class="report-container" id="sampleMetrics">
+            <h3>Sample Metrics</h3>
+            <iframe title="SampleMetrics" src="https://app.powerbi.com/reportEmbed?reportId=434b49ec-9aca-4d6d-a978-615e7552d824&autoAuth=true&ctid=ac79e5a8-e0e4-434b-a292-2c89b5c28366" allowFullScreen="true"></iframe>
+        </div>
+
+        <div class="description" id="descriptionText">
+            <h3>Description:</h3>
+            <p>This is a placeholder description. The description will change depending on the report selected.</p>
+        </div>
+
+        <h2>Power BI Calculations</h2>
+        <div class="container">
+            <div class="tables-menu">
+                <h2>Tables</h2>
+                <button class="table-button" data-table="CheckIn">CheckIn</button>
+                <button class="table-button" data-table="DEOut">DEOut</button>
+                <button class="table-button" data-table="Findings">Findings</button>
+                <button class="table-button" data-table="CalculatedTables">Calculated Tables</button>
+                <button class="table-button" data-table="CTMS">CTMS</button>
+            </div>
+
+            <div class="content-area">
+                <div id="CheckIn" class="table-section"></div>
+                <div id="DEOut" class="table-section"></div>
+                <div id="Findings" class="table-section"></div>
+                <div id="CalculatedTables" class="table-section"></div>
+                <div id="CTMS" class="table-section"></div>
+            </div>
+        </div>
+
+        <!-- Add the new styles -->
+        <style>
+            .tables-menu {
+                flex: 0 0 200px;
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .table-button {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                margin: 5px 0;
+                background: white;
+                border: 1px solid #dee2e6;
+                border-radius: 4px;
+                text-align: left;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .calculation {
+                margin-bottom: 10px;
+                border: 1px solid #dee2e6;
+                border-radius: 4px;
+            }
+
+            .calc-header {
+                padding: 10px 15px;
+                background: #f8f9fa;
+                cursor: pointer;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .calc-description {
+                display: none;
+                padding: 15px;
+                border-top: 1px solid #dee2e6;
+                background: #fff;
+            }
+
+            .dax-code {
+                display: none;
+                padding: 15px;
+                background: #f8f9fa;
+                border-top: 1px solid #dee2e6;
+                font-family: 'Consolas', monospace;
+                white-space: pre-wrap;
+            }
+
+            .table-section {
+                display: none;
+            }
+
+            .table-section.active {
+                display: block;
+            }
+
+            .measure-badge {
+                background: #28a745;
+                color: white;
+                padding: 2px 6px;
+                border-radius: 3px;
+                font-size: 12px;
+            }
+        </style>
+
+        <!-- Add the new script with calculationsData and handlers -->
+        <script>
+            const calculationsData = {
+                // ... Copy the entire calculationsData object from testdiv.html ...
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const tableButtons = document.querySelectorAll('.table-button');
+                
+                function createCalculationElement(calc) {
+                    return `
+                        <div class="calculation">
+                            <div class="calc-header" onclick="toggleCalcContent(this)">
+                                <span>${calc.name}</span>
+                                ${calc.isMeasure ? '<span class="measure-badge">Measure</span>' : ''}
+                            </div>
+                            <div class="calc-description">${calc.description}</div>
+                            <div class="dax-code">${calc.dax}</div>
+                        </div>
+                    `;
+                }
+
+                function loadTableContent(tableId) {
+                    const tableData = calculationsData[tableId];
+                    const tableSection = document.getElementById(tableId);
+                    if (tableData && !tableSection.hasAttribute('data-loaded')) {
+                        tableSection.innerHTML = tableData.map(calc => createCalculationElement(calc)).join('');
+                        tableSection.setAttribute('data-loaded', 'true');
+                    }
+                }
+
+                tableButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tableId = this.getAttribute('data-table');
+                        
+                        // Update active states
+                        tableButtons.forEach(btn => btn.classList.remove('active'));
+                        document.querySelectorAll('.table-section').forEach(section => section.classList.remove('active'));
+                        
+                        this.classList.add('active');
+                        document.getElementById(tableId).classList.add('active');
+                        
+                        loadTableContent(tableId);
+                    });
+                });
+
+                // Initialize with first table
+                tableButtons[0].click();
+            });
+
+            function toggleCalcContent(header) {
+                const calculation = header.parentElement;
+                const description = calculation.querySelector('.calc-description');
+                const daxCode = calculation.querySelector('.dax-code');
+                
+                const isExpanded = description.style.display === 'block';
+                
+                // Close all other calculations in the same section
+                const section = calculation.closest('.table-section');
+                section.querySelectorAll('.calc-description, .dax-code').forEach(el => {
+                    el.style.display = 'none';
+                });
+
+                if (!isExpanded) {
+                    description.style.display = 'block';
+                    daxCode.style.display = 'block';
+                }
+            }
+        </script>
+
+    <script>
+        function showReport(reportId) {
+            document.getElementById('sampleReport').style.display = 'none';
+            document.getElementById('sampleMetrics').style.display = 'none';
+            document.getElementById('descriptionText').style.display = 'none';
+            document.getElementById(reportId).style.display = 'block';
+            document.getElementById('descriptionText').style.display = 'block';
+        }
+        showReport('sampleReport');
+    </script>
+              <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const markdownContainer = document.querySelector(".markdown-container");
+        markdownContainer.innerHTML = marked.parse(markdownContainer.innerText);
+    });
+</script>
+    <script>
+        // ...existing showReport function...
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const markdownContent = document.querySelector(".markdown-container").innerText;
+            const sections = markdownContent.split('\n# ').filter(Boolean);
+            
+            const processDAXSection = (content) => {
+                const daxMatch = content.match(/```dax([\s\S]*?)```/);
+                return daxMatch ? daxMatch[1].trim() : '';
+            };
+
+            const processDescription = (content) => {
+                return content.split('```dax')[0].trim();
+            };
+
+            const formatContent = sections.map(section => {
+                const [title, ...content] = section.split('\n');
+                const subSections = content.join('\n').split('\n## ').filter(Boolean);
+                
+                let formattedSubSections = subSections.map(subSection => {
+                    const [subTitle, ...subContent] = subSection.split('\n');
+                    const items = subContent.join('\n').split('\n* ').filter(Boolean);
+                    
+                    let formattedItems = items.map(item => {
+                        const descriptionPart = processDescription(item);
+                        const daxPart = processDAXSection(item);
+                        
+                        const isMeasure = descriptionPart.includes('**Measure**');
+                        const cleanDescription = descriptionPart.replace('**Measure**', '');
+                        
+                        return `
+                            <button class="level-3-collapsible">${cleanDescription}${isMeasure ? '<span class="measure-tag">Measure</span>' : ''}</button>
+                            <div class="level-3-content">
+                                ${daxPart ? `<div class="dax-code">${daxPart}</div>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+
+                    return `
+                        <button class="level-2-collapsible">${subTitle}</button>
+                        <div class="level-2-content">
+                            ${formattedItems}
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <button class="level-1-collapsible">${title}</button>
+                    <div class="level-2-content">
+                        ${formattedSubSections}
+                    </div>
+                `;
+            }).join('');
+
+            document.querySelector(".markdown-container").innerHTML = formattedContent;
+
+            // Add click handlers for all levels
+            document.querySelectorAll('.level-1-collapsible, .level-2-collapsible, .level-3-collapsible').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+        });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const markdownContent = document.querySelector(".markdown-container").innerText;
+        
+        // Process the markdown content to extract sections
+        const sections = {};
+        let currentSection = "";
+        
+        // Split content by sections and organize data
+        markdownContent.split('\n## ').forEach(section => {
+            if (section.includes('# Calculated Values')) return; // Skip the main title
+            
+            const [title, ...content] = section.split('\n');
+            const items = content.join('\n').split('\n* ').filter(Boolean);
+            
+            const calculations = items.map(item => {
+                const descriptionPart = item.split('```dax')[0].trim();
+                const daxPart = item.includes('```dax') ? 
+                    item.split('```dax')[1].split('```')[0].trim() : '';
+                
+                return {
+                    description: descriptionPart,
+                    dax: daxPart,
+                    isMeasure: descriptionPart.includes('**Measure**')
+                };
+            });
+            
+            sections[title.trim()] = calculations;
+        });
+        
+        // Create HTML structure
+        let html = '<div class="calculation-section">';
+        html += '<ul class="table-list">';
+        
+        // Add table sections
+        Object.keys(sections).forEach(tableName => {
+            html += `
+                <li class="table-item" onclick="toggleCalculations(this)">
+                    ${tableName}
+                    <ul class="calculation-list">
+                        ${sections[tableName].map(calc => `
+                            <li class="calculation-item" onclick="toggleDax(event, this)">
+                                ${calc.description.replace('**Measure**', '')}
+                                ${calc.isMeasure ? '<span class="measure-badge">Measure</span>' : ''}
+                                <div class="dax-content">${calc.dax}</div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </li>
+            `;
+        });
+        
+        html += '</ul></div>';
+        
+        document.querySelector(".markdown-container").innerHTML = html;
+    });
+
+    function toggleCalculations(element) {
+        event.stopPropagation();
+        const calculationList = element.querySelector('.calculation-list');
+        const isVisible = calculationList.style.display === 'block';
+        
+        // Hide all calculation lists
+        document.querySelectorAll('.calculation-list').forEach(list => {
+            list.style.display = 'none';
+        });
+        
+        // Hide all DAX content
+        document.querySelectorAll('.dax-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        
+        // Remove active class from all items
+        document.querySelectorAll('.table-item, .calculation-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        if (!isVisible) {
+            calculationList.style.display = 'block';
+            element.classList.add('active');
+        }
+    }
+
+    function toggleDax(event, element) {
+        event.stopPropagation();
+        const daxContent = element.querySelector('.dax-content');
+        const isVisible = daxContent.style.display === 'block';
+        
+        // Hide all other DAX content in the same group
+        element.parentElement.querySelectorAll('.dax-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        
+        // Remove active class from siblings
+        element.parentElement.querySelectorAll('.calculation-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        if (!isVisible) {
+            daxContent.style.display = 'block';
+            element.classList.add('active');
+        }
+    }
+</script>
+
+</body>
+</html>

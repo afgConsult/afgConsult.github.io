@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Projects - Alex Francisco Gomez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Color Palette */
+        .dark-green { background-color: #102820; }
+        .hunter-green { background-color: #4C6444; }
+        .tan { background-color: #E8D5C4; }
+        .text-tan { color: #E8D5C4; }
+        .text-deep-brown { color: #C3B091; }
+    </style>
+</head>
+<body class="bg-tan text-dark-green transition-all">
+    <!-- Navigation -->
+    <nav class="dark-green p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
+            <ul class="flex space-x-6">
+                <li><a href="index.html#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
+                <li><a href="index.html#quality-report" class="text-deep-brown hover:text-hunter-green">Quality Report Project</a></li>
+                <li><a href="index.html#lab-tracking" class="text-deep-brown hover:text-hunter-green">Lab Tracking Project</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="dark-green p-16 text-center w-full">
+        <div class="container mx-auto max-w-4xl">
+           
+            <h1 class="text-4xl font-bold mb-8 text-deep-brown max-w-4xl mx-auto">Quality & Clinical Interface</h2>
+            
+        </div>
+    </header>
+
+    <!-- Report Section -->
+    <section id="powerbi-report" class="py-24" style="background-color: #423e3a;">
+        <div class="container mx-auto px-6" style="max-width: 1600px;">
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown max-w-4xl mx-auto">Sample Report</h2>
+            <p class="text-xl text-deep-brown mb-8 leading-relaxed max-w-4xl mx-auto">See below for report description. (Disclaimer: The report utlizes sample data and is not confidential.)</p>
+            <div class="bg-[#102820] p-8 rounded-lg shadow-lg mx-auto">
+                <iframe 
+                    title="SampleReport" 
+                    width="100%" 
+                    height="800" 
+                    src="https://app.powerbi.com/view?r=eyJrIjoiNTk2YTNiMDktYzUyZC00NjVjLTg2YzEtOGQ3NWFiNmU5N2NkIiwidCI6ImFjNzllNWE4LWUwZTQtNDM0Yi1hMjkyLTJjODliNWMyODM2NiIsImMiOjF9" 
+                    frameborder="0" 
+                    allowFullScreen="true"
+                    class="shadow-lg">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Description Section -->
+    <section class="py-24" style="background-color: #2b2825;">
+        <div class="container mx-auto max-w-4xl px-6">
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Report Features</h2>
+            <p class="text-xl text-deep-brown mb-8 leading-relaxed">Sample Report is used by staff for clinical operations and quality control. The report contains:</p>
+            <div class="space-y-12 text-deep-brown">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Pending Check In (1 of 6)</h3>
+                    <p class="mb-4 text-xl">Displays subjects that have started their visit. Once the Clinical Staff checks the visit into Quality Control the visit depopulates, ensuring only visits pendings QC are shown on this page.</p>
+                    <ul class="list-disc pl-8 space-y-2">
+                        <li>Pending Check In Count: Displays a quick numeric value for staff to review the number of pending charts. Vital for individual staff and main CRCs.</li>
+                        <li>Shows when the Visit occurred for urgency</li>
+                        <li>Staff filter: Allows CRCs to focus on individual tasks</li>
+                        <li>Subject filter: Allows for a study-level filter as well for main CRCs</li>
+                        <li>Date filter: To prioritize visits</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Pending Response (2 of 6)</h3>
+                    <p class="mb-4 text-xl">Provides Clinical Staff with Findings that have been issued by Quality Control and are pending correction. Once Corrected the Finding depopualtes.</p>
+                    <ul class="list-disc pl-8 space-y-2">
+                        <li>Count of Findings: Displays a quick numeric value for staff to review the amount of findings they have. Vital for individual staff and main CRCs.</li>
+                        <li>Issued by: When a finding is selected, the QC staff that issued the finding populates.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Pending QC (3 of 6)</h3>
+                    <p class="mb-4 text-xl">Quality Control uses this page to monitor checked-in charts ready for review, enabling them to prioritize and meet review timelines while ensuring no charts are missed.</p>
+                    <ul class="list-disc pl-8 space-y-2">
+                        <li>Color coordination populates when a visit that has been checked in is older than two days.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Pending Verification (4 of 6)</h3>
+                    <p class="mb-4 text-xl">Shows Quality Control the Findings that have been responded to and have not been verified. This allows Quality Control to review correction made by Clinical Staff for data is accurate.</p>
+                    <ul class="list-disc pl-8 space-y-2">
+                        <li>Center table populates findings that have been responded to, along with the number of days it took to respond to the finding.</li>
+                        <li>Top right table populates the responses when a row is selected.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Findings Directory and Visit Directory (5 & 6 of 6)</h3>
+                    <p class="mb-4 text-xl">Provides the history of all Visits and Findings to review.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="dark-green py-6 text-center text-tan">
+        <p>&copy; 2025 Alex Francisco Gomez. All rights reserved.</p>
+    </footer>
+</body>
+</html>
