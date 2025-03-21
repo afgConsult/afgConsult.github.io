@@ -431,6 +431,17 @@ RETURN FORMAT(StartOfWeek, "dd-mmm-yyyy") & " - " & FORMAT(EndOfWeek, "dd-mmm-yy
             ],
             Findings: [
                 {
+                    name: "ZzAVGFindingCount", 
+                    description: "Continous variable for the number of findings per visit.",
+                    dax: `ZzAVGFindingCount = 
+DIVIDE(
+    COUNT(Findings1[Finding Key]),
+    DISTINCTCOUNT(Findings1[Visit Key]),
+    0
+)`,
+                    isMeasure: true
+                },
+                {
                     name: "ZzCompletion Time",
                     description: "Continuous variable for time between Findings issued and findings verified.",
                     dax: `ZzCompletion Time = 
