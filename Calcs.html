@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Calculations - Alex Francisco Gomez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Color Palette */
+        .dark-green { background-color: #102820; }
+        .hunter-green { background-color: #4C6444; }
+        .tan { background-color: #E8D5C4; }
+        .text-tan { color: #E8D5C4; }
+        .text-deep-brown { color: #C3B091; }
+
+        .calculation {
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .calc-header {
+            padding: 1rem;
+            background-color: #102820;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #E8D5C4;
+        }
+
+        .calc-description, .dax-code {
+            padding: 1rem;
+            background-color: #102820;
+            color: #E8D5C4;
+        }
+
+        .measure-badge {
+            background-color: #4C6444;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .table-button {
+            transition-property: background-color;
+            transition-duration: 300ms;
+            background-color: rgba(16, 40, 32, 0.6);
+        }
+
+        .table-button.active {
+            background-color: rgba(16, 40, 32, 0.8);
+            transform: scale(1.05);
+        }
+
+        .table-section {
+            display: none;
+            color: #E8D5C4;
+            padding: 1.5rem;
+        }
+
+        .table-section.active {
+            display: block;
+        }
+
+        .dax-code {
+            font-family: monospace;
+            background-color: #1a1a1a;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body class="bg-tan text-dark-green transition-all">
+    <!-- Navigation -->
+    <nav class="dark-green p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
+            <ul class="flex space-x-6">
+                <li><a href="index.html#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
+                <li><a href="index.html#quality-report" class="text-deep-brown hover:text-hunter-green">Quality Report Project</a></li>
+                <li><a href="index.html#lab-tracking" class="text-deep-brown hover:text-hunter-green">Lab Tracking Project</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <header class="dark-green p-16 text-center w-full">
+        <div class="container mx-auto max-w-4xl">
+            <h1 class="text-5xl font-bold mb-6 text-deep-brown">Power BI Calculations & Measures</h1>
+           
+        </div>
+    </header>
+
+    <!-- Calculations Section -->
+    <section id="powerbi-calculations" class="py-24" style="background-color: #504b47;">
+        <div class="container mx-auto max-w-4xl px-6">
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Dax Formulas</h2>
+            <p class="text-xl text-deep-brown mb-12 leading-relaxed">These calculations were developed to ensure accurate data population within PowerBI and to track key metrics required by management and Standard Operating Procedures (SOPs). Each calculation serves a specific purpose in monitoring workflow efficiency, quality control, and compliance with established standards.</p>
+            <p class="text-xl text-deep-brown mb-12 leading-relaxed">Select the tables below to see their calulated columns and measures.</p>
+
+            <div class="mb-12">
+                <div class="flex flex-wrap gap-4">
+                    <button class="table-button text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-all duration-300 shadow-lg border-2 border-[#C3B091] hover:scale-105" data-table="CheckIn">CheckIn</button>
+                    <button class="table-button text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-all duration-300 shadow-lg border-2 border-[#C3B091] hover:scale-105" data-table="DEOut">DEOut</button>
+                    <button class="table-button text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-all duration-300 shadow-lg border-2 border-[#C3B091] hover:scale-105" data-table="Findings">Findings</button>
+                    <button class="table-button text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-all duration-300 shadow-lg border-2 border-[#C3B091] hover:scale-105" data-table="CalculatedTables">Calculated Tables</button>
+                    <button class="table-button text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-all duration-300 shadow-lg border-2 border-[#C3B091] hover:scale-105" data-table="CTMS">CTMS</button>
+                </div>
+            </div>
+
+            <div class="content-sections">
+                <div id="CheckIn" class="table-section"></div>
+                <div id="DEOut" class="table-section"></div>
+                <div id="Findings" class="table-section"></div>
+                <div id="CalculatedTables" class="table-section"></div>
+                <div id="CTMS" class="table-section"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sample Report Section (Hidden by default) -->
+    <div id="sampleReport" class="hidden">
+        <!-- Report content here -->
+    </div>
+    <div id="descriptionText" class="hidden">
+        <div id="reportDescription"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="dark-green py-6 text-center text-tan">
+        <p>&copy; 2025 Alex Francisco Gomez. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Calculation data
+        const calculationsData = {
+            CheckIn: [
+                {
+                    name: "ZzAge",
+                    description: "Continuous variable for number of business days since submission.",
+                    dax: `ZzAge = 
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= [Check-In Date] &&
+            'CalendarTable'[Date] <= TODAY() &&
+            'CalendarTable'[IsBusinessDay] = TRUE
+        )
+    ) - 1`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzCheckAge",
+                    description: "Continuous Variable for dates from Visit to when checked in.",
+                    dax: `ZzCheckAge = 
+IF(
+    ISBLANK(RELATED(CTMS[Visit By:Date])),
+    DATEDIFF(TODAY(), RELATED(CTMS[Visit By:Date]), DAY),
+    DATEDIFF(CheckIn[Check-In Date], RELATED(CTMS[Visit By:Date]), DAY)
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzCriticalCount",
+                    description: "Continuous variable, counts of number of critical findings.",
+                    dax: `ZZCriticalCount = 
+IF(
+    ISBLANK(
+        CALCULATE(
+            COUNTROWS(Findings1),
+            FILTER(
+                Findings1, 
+                Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+                Findings1[Follow Up] = "Critical - Follow Up"
+            )
+        )
+    ),
+    0,
+    CALCULATE(
+        COUNTROWS(Findings1),
+        FILTER(
+            Findings1, 
+            Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+            Findings1[Follow Up] = "Critical - Follow Up"
+        )
+    )
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzFindingsCount",
+                    description: "Continuous variable, counts of number of findings for a chart.",
+                    dax: `ZzFindingsCount = 
+IF(
+    ISBLANK(
+        CALCULATE(
+            COUNTROWS(Findings1),
+            FILTER(
+                Findings1, 
+                Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+                NOT (Findings1[Category] = "None" || Findings1[Category] = "All Good")
+            )
+        )
+    ),
+    0,
+    CALCULATE(
+        COUNTROWS(Findings1),
+        FILTER(
+            Findings1, 
+            Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+            NOT (Findings1[Category] = "None" || Findings1[Category] = "All Good")
+        )
+    )
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzMajorCount",
+                    description: "Continuous variable, counts the number of major findings.",
+                    dax: `ZZMajorCount = 
+IF(
+    ISBLANK(
+        CALCULATE(
+            COUNTROWS(Findings1),
+            FILTER(
+                Findings1, 
+                Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+                Findings1[Follow Up] = "Major - Follow Up"
+            )
+        )
+    ),
+    0,
+    CALCULATE(
+        COUNTROWS(Findings1),
+        FILTER(
+            Findings1, 
+            Findings1[Visit Key] = EARLIER(CheckIn[Visit Key]) &&
+            Findings1[Follow Up] = "Major - Follow Up"
+        )
+    )
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzNewest",
+                    description: "Binary variable for latest submission chart checkin submission for a Subject/Visit.",
+                    dax: `ZzNewest = 
+    VAR MaxTimeSubmitted =
+        CALCULATE(
+            MAX(CheckIn[ZzTimeStamp]),
+            ALLEXCEPT(CheckIn, 'CheckIn'[Study], 'CheckIn'[Subject Number], 'CheckIn'[Visit])
+        )
+    RETURN IF('CheckIn'[ZzTimeStamp] = MaxTimeSubmitted, 1, 0)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzPriority",
+                    description: "Measure - Categorical variable, Yellow when ZzAge eq 2 and Red when gt 2.",
+                    dax: `ZzPriority = 
+VAR AgeValue = SELECTEDVALUE('CheckIn'[ZzAge])
+RETURN 
+    IF(AgeValue = 2, "#FFFF00", IF(AgeValue > 2, "#FF0000", BLANK()))`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzQCAge",
+                    description: "Continuous Variable for dates from Check In to when QC'd.",
+                    dax: `ZzQCAge = 
+IF(
+    ISBLANK(Related(DEOut[QC Date])),
+    DATEDIFF(TODAY(), Related(DEOut[QC Date]), DAY),
+    DATEDIFF(CheckIn[Check-In Date], RELATED(DEOut[QC Date]), DAY)
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzSignificance",
+                    description: "Measure - Continuous variable, counts types of findings per visit.",
+                    dax: `ZzSignificance = 
+VAR VisitKey = SELECTEDVALUE(CheckIn[Visit Key])
+VAR FollowUpValues = 
+    CALCULATETABLE(
+        VALUES('Findings1'[Follow Up]),
+        'Findings1'[Visit Key] = VisitKey
+    )
+VAR HasCritical = CONTAINSSTRING(CONCATENATEX(FollowUpValues, [Follow Up], ","), "Critical")
+VAR HasMajor = CONTAINSSTRING(CONCATENATEX(FollowUpValues, [Follow Up], ","), "Major")
+VAR HasNormal = CONTAINSSTRING(CONCATENATEX(FollowUpValues, [Follow Up], ","), "Normal")
+
+RETURN
+IF(
+    COUNTROWS(FollowUpValues) = 0,
+    "Pending",
+    IF(
+        HasCritical && HasMajor,
+        "Critical and Major",
+        IF(
+            HasCritical,
+            "Critical",
+            IF(
+                HasMajor,
+                "Major",
+                IF(
+                    HasNormal,
+                    "Normal",
+                    "Pending"
+                )
+            )
+        )
+    )
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzStatus",
+                    description: "Binary variable for if chart is checked in or checked out.",
+                    dax: `ZzStatus = 
+IF (
+    NOT ( ISBLANK ( RELATED ( 'DEOut'[Visit Key]) ) )
+        || NOT ( ISBLANK ( RELATED ('CheckOut'[Visit Key]) ) ),
+    "Out",
+    "In"
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzTimeStamp",
+                    description: "Date variable to combine date and time.",
+                    dax: `ZzTimeStamp = 
+    VAR TimeStampString = CheckIn[Check-In Date] & " " & CheckIn[Check In Time]
+    RETURN DATEVALUE(TimeStampString) + TIMEVALUE(TimeStampString)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzTurnAround",
+                    description: "Continuous variable, counts the number of days to complete a visit.",
+                    dax: `ZzTurnAround = 
+VAR CheckInDate = 'CheckIn'[Check-In Date]
+VAR QCDate = RELATED('DEOut'[QC Date])
+VAR EndDate = IF(ISBLANK(QCDate), TODAY(), QCDate)
+RETURN
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= CheckInDate &&
+            'CalendarTable'[Date] <= EndDate &&
+            'CalendarTable'[IsBusinessDay] = TRUE()
+        )
+    ) - 1`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzTurnAroundCount",
+                    description: "Measure - Continuous variable, counts the number of charts that take less than 3 days to complete.",
+                    dax: `ZzTurnAroundCount = 
+COUNTROWS(
+    FILTER(
+        CheckIn,
+        CheckIn[ZzTurnAround] < 3
+    )
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzTurnAroundPCT",
+                    description: "Measure - Continuous, percent of charts done under 2 days minus the ones checked out by clinical staff.",
+                    dax: `ZzTurnAroundPCT = 
+DIVIDE(
+    [ZzTurnAroundCount] - COUNT('CheckOut'[Visit Key]), 
+    COUNTA('CheckIn'[ZzTurnAround]) - COUNT('CheckOut'[Visit Key])
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzWeekofCheckIn",
+                    description: "Categorical variable, group of days by work week.",
+                    dax: `ZzWeekofCheckIn = 
+VAR StartOfWeek = 'Checkin'[Check-in Date] - WEEKDAY('Checkin'[Check-in Date], 2) + 1  -- Monday
+VAR EndOfWeek = StartOfWeek + 4  -- Friday (Monday + 4 days)
+RETURN FORMAT(StartOfWeek, "dd-mmm-yyyy") & " - " & FORMAT(EndOfWeek, "dd-mmm-yyyy")`,
+                    isMeasure: false
+                }
+            ],
+            DEOut: [
+                {
+                    name: "ZzChartTime",
+                    description: "Continuous Variable, time difference between the Start of a chart and DeOut.",
+                    dax: `ZzCharttime = 
+IF(
+    ISBLANK(RELATED(ChartStart[Visit Key])) || ISBLANK(DEOut[QC Time]) || ISBLANK(RELATED(ChartStart[Start By:Time])),
+    0,
+    ABS(
+        (HOUR(RELATED(ChartStart[Start By:Time])) * 60 + MINUTE(RELATED(ChartStart[Start By:Time]))) - 
+        (HOUR(DEOut[QC Time]) * 60 + MINUTE(DEOut[QC Time]))
+    )
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzPendingCheckIn",
+                    description: "Continuous Variable, count of charts pending QC.",
+                    dax: `ZzPendingCheckIn = COUNTA('CheckIn'[Visit Key]) - COUNTA('DEOut'[Visit Key])`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzPlogMetric",
+                    description: "Continuous Variable, Count of Findings per Visit.",
+                    dax: `ZzPlogMetric = 
+VAR VisitKey = DEOut[Visit Key]
+VAR VisitCount = 
+    CALCULATE(
+        COUNTROWS(Findings1),
+        Findings1[Visit Key] = VisitKey,
+        Findings1[Category] <> "None"  -- Filter out rows where Category is "None"
+    )
+RETURN
+    IF(ISBLANK(VisitCount), 0, VisitCount)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzWeekOfQC",
+                    description: "Categorical Variable, group of days for a given week.",
+                    dax: `ZzWeekOfQC = 
+VAR StartOfWeek = 'DEOut'[QC Date] - WEEKDAY('DEOut'[QC Date], 2) + 1  -- Monday
+VAR EndOfWeek = StartOfWeek + 4  -- Friday (Monday + 4 days)
+RETURN FORMAT(StartOfWeek, "dd-mmm-yyyy") & " - " & FORMAT(EndOfWeek, "dd-mmm-yyyy")`,
+                    isMeasure: false
+                }
+            ],
+            Findings: [
+                {
+                    name: "ZzAVGFindingCount", 
+                    description: "Continous variable for the number of findings per visit.",
+                    dax: `ZzAVGFindingCount = 
+DIVIDE(
+    COUNT(Findings1[Finding Key]),
+    DISTINCTCOUNT(Findings1[Visit Key]),
+    0
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzCompletion Time",
+                    description: "Continuous variable for time between Findings issued and findings verified.",
+                    dax: `ZzCompletion Time = 
+IF(
+    ISBLANK(RELATED('Response'[Completed By:Date])),
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= 'Findings1'[Review Date] &&
+            'CalendarTable'[Date] <= TODAY() &&
+            'CalendarTable'[IsBusinessDay] = TRUE
+        )
+    ) - 1,
+    IF(
+        ISBLANK(RELATED('Verify'[Verified By:Date])),
+        COUNTROWS(
+            FILTER(
+                'CalendarTable',
+                'CalendarTable'[Date] >= 'Findings1'[Review Date] &&
+                'CalendarTable'[Date] <= TODAY() &&
+                'CalendarTable'[IsBusinessDay] = TRUE
+            )
+        ) - 1,
+        COUNTROWS(
+            FILTER(
+                'CalendarTable',
+                'CalendarTable'[Date] >= 'Findings1'[Review Date] &&
+                'CalendarTable'[Date] <= RELATED('Verify'[Verified By:Date]) &&
+                'CalendarTable'[IsBusinessDay] = TRUE
+            )
+        )
+    )
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzResponse Time",
+                    description: "Continuous variable for time between Findings issued and finding Responded to by Clinical.",
+                    dax: `ZzResponse Time = 
+IF(
+    ISBLANK(RELATED('Response'[Completed By:Date])),
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= 'Findings1'[Review Date] &&
+            'CalendarTable'[Date] <= TODAY() &&
+            'CalendarTable'[IsBusinessDay] = TRUE
+        )
+    ) - 1,
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= 'Findings1'[Review Date] &&
+            'CalendarTable'[Date] <= RELATED('Response'[Completed By:Date]) &&
+            'CalendarTable'[IsBusinessDay] = TRUE
+        )
+    ) - 1
+)`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzStatus",
+                    description: "Categorical variable, if findings in pending Response or has been responded to.",
+                    dax: `ZzStatus = 
+    IF(
+        ISBLANK(RELATED('Verify'[Verified By:Date])),
+        IF(
+            ISBLANK(RELATED('Response'[Completed By:Date])),
+            "Pending",
+            "Responded"
+        ),
+        "Completed"
+    )`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzUrgent",
+                    description: "Measure - Categorical variable, Yellow/Red.",
+                    dax: `ZzUrgent = 
+SWITCH(
+    TRUE(),
+    SELECTEDVALUE('Findings1'[Follow Up]) = "Normal", BLANK(),
+    SELECTEDVALUE('Findings1'[Follow Up]) = "Major", "Yellow",
+    SELECTEDVALUE('Findings1'[Follow Up]) = "Critical", "Red",
+    BLANK()  
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzWeekofFindings",
+                    description: "Categorical Variable, group of dates by week.",
+                    dax: `ZzWeekofFindings = 
+VAR StartOfWeek = 'Findings1'[Review Date] - WEEKDAY('Findings1'[Review Date], 2) + 1  -- Monday
+VAR EndOfWeek = StartOfWeek + 4  -- Friday (Monday + 4 days)
+RETURN FORMAT(StartOfWeek, "dd-mmm-yyyy") & " - " & FORMAT(EndOfWeek, "dd-mmm-yyyy")`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzXcount",
+                    description: "Continuous variable for number of yes values in the Findings[Follow up] column.",
+                    dax: `ZzXcount = 
+CALCULATE(
+    COUNTA('Findings1'[Visit Completed by]),
+    'Findings1'[Follow Up] = "Major" || 'Findings1'[Follow Up] = "Critical"
+)`,
+                    isMeasure: false
+                }
+            ],
+            CalculatedTables: [
+                {
+                    name: "CalendarTable",
+                    description: "Table made for wide date options for all data.",
+                    dax: `CalendarTable = 
+ADDCOLUMNS (
+    CALENDAR (DATE(2020, 1, 1), DATE(YEAR(TODAY()) + 1, MONTH(TODAY()), DAY(TODAY()))),
+    "Year", YEAR([Date]),
+    "Month", MONTH([Date]),
+    "Day", DAY([Date]),
+    "DayOfWeek", WEEKDAY([Date]),
+    "DayName", FORMAT([Date], "dddd"),
+    "IsWeekday", IF(WEEKDAY([Date], 2) < 6, TRUE, FALSE),
+    "IsWeekend", IF(WEEKDAY([Date], 2) >= 6, TRUE, FALSE),
+    "IsHoliday", 
+        IF (
+            [Date] = DATE(YEAR([Date]), 1, 1) ||  // New Year's Day
+            [Date] = DATE(YEAR([Date]), 1, 20) ||  // MLK Day 
+            [Date] = DATE(YEAR([Date]), 7, 4) ||  // Independence Day
+            [Date] = DATE(YEAR([Date]), 12, 24) ||  // Christmas Eve
+            [Date] = DATE(YEAR([Date]), 12, 25) ||  // Christmas Day
+            [Date] = DATE(YEAR([Date]), 12, 31) ||  // New Year's Eve
+            [Date] = DATE(YEAR([Date]), 11, 25) ||  // Thanksgiving 
+            [Date] = DATE(YEAR([Date]), 11, 26),  // Day after Thanksgiving 
+            TRUE, FALSE
+        ),
+    "IsBusinessDay", 
+        IF (
+            IF(WEEKDAY([Date], 2) < 6, TRUE, FALSE) = TRUE() && 
+            IF (
+                [Date] = DATE(YEAR([Date]), 1, 1) ||  // New Year's Day
+                [Date] = DATE(YEAR([Date]), 1, 20) ||  // MLK Day 
+                [Date] = DATE(YEAR([Date]), 7, 4) ||  // Independence Day
+                [Date] = DATE(YEAR([Date]), 12, 24) ||  // Christmas Eve
+                [Date] = DATE(YEAR([Date]), 12, 25) ||  // Christmas Day
+                [Date] = DATE(YEAR([Date]), 12, 31) ||  // New Year's Eve
+                [Date] = DATE(YEAR([Date]), 11, 25) ||  // Thanksgiving 
+                [Date] = DATE(YEAR([Date]), 11, 26),  // Day after Thanksgiving
+                TRUE, FALSE
+            ) = FALSE(),
+            TRUE, 
+            FALSE
+        )
+)`,
+                    isMeasure: false
+                }
+            ],
+            CTMS: [
+                {
+                    name: "ZzTurnAroundCTMS",
+                    description: "Continuous variable, counts the number of days to complete a visit.",
+                    dax: `ZzTurnAroundCTMS = 
+VAR CheckInDate = 'CTMS'[Visit By:Date]
+VAR QCDate = RELATED('DEOut'[QC Date])
+VAR EndDate = IF(ISBLANK(QCDate), TODAY(), QCDate)
+RETURN
+    COUNTROWS(
+        FILTER(
+            'CalendarTable',
+            'CalendarTable'[Date] >= CheckInDate &&
+            'CalendarTable'[Date] <= EndDate &&
+            'CalendarTable'[IsBusinessDay] = TRUE()
+        )
+    ) - 1`,
+                    isMeasure: false
+                },
+                {
+                    name: "ZzTurnAroundCountCTMS",
+                    description: "Measure - Continuous variable, counts the number of charts that take less than 3 days to complete.",
+                    dax: `ZzTurnAroundCountCTMS = 
+COUNTROWS(
+    FILTER(
+        CTMS,
+        CTMS[ZzTurnAroundCTMS] < 3
+    )
+)`,
+                    isMeasure: true
+                },
+                {
+                    name: "ZzTurnAroundPCT_CTMS",
+                    description: "Measure - Continuous, percent of charts done under 2 days minus the ones checked out by clinical staff.",
+                    dax: `ZzTurnAroundPCT_CTMS = 
+DIVIDE(
+    [ZzTurnAroundCountCTMS] - COUNT('CheckOut'[Visit Key]), 
+    COUNTA('CTMS'[Visit Key]) - COUNT('CheckOut'[Visit Key])
+)`,
+                    isMeasure: true
+                }
+            ]
+        };
+
+        // Report descriptions
+        const descriptions = {
+            sampleReport: `Sample Report is used by staff for clinical operations and quality control. The report contains:
+            <ul>
+                <li><strong>Pending Check In:</strong> Displays subjects that have come into the office and seen front desk. The clinical research coordinator must check these charts into QC for them to depopulate.
+                    <ul>
+                        <li>Pending Check In Count: Displays a quick numeric value for staff to review the number of pending charts. Vital for individual staff and main CRCs.</li>
+                        <li>Shows when the Visit occurred for urgency</li>
+                        <li>Staff filter: Allows CRCs to focus on individual tasks</li>
+                        <li>Subject filter: Allows for a study-level filter as well for main CRCs</li>
+                        <li>Date filter: To prioritize visits</li>
+                    </ul>
+                </li>
+                <li><strong>Pending Response:</strong> Shows findings issued by QC that have not been responded to by clinical staff.
+                    <ul>
+                        <li>Count of Findings: Displays a quick numeric value for staff to review the amount of findings they have. Vital for individual staff and main CRCs.</li>
+                        <li>Issued by: When a finding is selected, the QC staff that issued the finding populates.</li>
+                    </ul>
+                </li>
+                <li><strong>Pending QC:</strong> Lists charts that have been checked in by clinical staff and have not yet been QC'd.
+                    <ul>
+                        <li>Color coordination populates when a visit that has been checked in is older than two days.</li>
+                    </ul>
+                </li>
+                <li><strong>Pending Verification:</strong> Shows findings that have been responded to and have not been verified yet.
+                    <ul>
+                        <li>Center table populates findings that have been responded to, along with the number of days it took to respond to the finding.</li>
+                        <li>Top right table populates the responses when a row is selected.</li>
+                    </ul>
+                </li>
+                <li><strong>Findings Directory and Visit Directory:</strong> Lists out all visits and findings.</li>
+            </ul>`
+        };
+
+        // Function to show a report
+        function showReport(reportId) {
+            document.getElementById('sampleReport').style.display = 'block';
+            document.getElementById('descriptionText').style.display = 'block';
+            document.getElementById('reportDescription').innerHTML = descriptions[reportId];
+        }
+
+        // Function to create calculation element HTML
+        function createCalculationElement(calc) {
+            return `
+                <div class="calculation">
+                    <div class="calc-header">
+                        <span class="font-semibold">${calc.name}</span>
+                        ${calc.isMeasure ? '<span class="measure-badge">Measure</span>' : ''}
+                    </div>
+                    <div class="calc-description hidden">${calc.description}</div>
+                    <div class="dax-code hidden">${calc.dax}</div>
+                </div>
+            `;
+        }
+
+        // Function to load table content
+        function loadTableContent(tableId) {
+            const tableSection = document.getElementById(tableId);
+            if (!tableSection) return;
+            
+            const tableData = calculationsData[tableId];
+            if (!tableData) {
+                tableSection.innerHTML = '<p class="text-tan">No calculations found for this table.</p>';
+                return;
+            }
+
+            tableSection.innerHTML = tableData.map(calc => createCalculationElement(calc)).join('');
+            
+            // Add click handlers to all calculation headers in this section
+            tableSection.querySelectorAll('.calc-header').forEach(header => {
+                header.addEventListener('click', function() {
+                    const calculation = this.parentElement;
+                    const description = calculation.querySelector('.calc-description');
+                    const daxCode = calculation.querySelector('.dax-code');
+                    
+                    description.classList.toggle('hidden');
+                    daxCode.classList.toggle('hidden');
+                });
+            });
+        }
+
+        // Add click handlers to table buttons
+        document.querySelectorAll('.table-button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and sections
+                document.querySelectorAll('.table-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.table-section').forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const tableId = this.getAttribute('data-table');
+                const section = document.getElementById(tableId);
+                section.classList.add('active');
+                
+                // Load content if not already loaded
+                loadTableContent(tableId);
+            });
+        });
+
+        // Initialize with first table
+        const firstButton = document.querySelector('.table-button');
+        if (firstButton) {
+            firstButton.click();
+        }
+    </script>
+</body>
+</html>
