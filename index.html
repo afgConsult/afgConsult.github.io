@@ -23,7 +23,7 @@
             <ul class="flex space-x-6">
                 <li><a href="#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
                 <li><a href="#quality-report" class="text-deep-brown hover:text-hunter-green">Clinical Trials Quality Project</a></li>
-                <li><a href="#lab-tracking" class="text-deep-brown hover:text-hunter-green">Lab Tracking Project</a></li>
+                <li><a href="#healthcare-intelligence" class="text-deep-brown hover:text-hunter-green">Healthcare Intelligence Hub</a></li>
             </ul>
         </div>
     </nav>
@@ -41,8 +41,25 @@
     <section id="resume" class="py-24" style="background-color: #504b47;">
         <div class="container mx-auto max-w-4xl px-6">
             <h2 class="text-4xl font-bold mb-8 text-deep-brown">Resume</h2>
-            <p class="text-xl text-deep-brown mb-8 leading-relaxed">Here is an overview of my professional experience and skills.</p>
-            <a href="./assests/Alex Gomez Resume 2025 Q3.pdf" class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">Download Resume</a>
+            
+            <!-- Embedded PDF Viewer -->
+            <div class="bg-tan rounded-lg shadow-2xl p-4 relative">
+                <div class="w-full" style="height: 900px;">
+                    <iframe 
+                        src="./assests/Alex Gomez Resume 2025 Q3.pdf#view=FitH" 
+                        class="w-full h-full rounded-lg border-2 border-[#102820]"
+                        type="application/pdf"
+                        title="Alex Francisco Gomez Resume">
+                    </iframe>
+                </div>
+                
+                <!-- Download Button -->
+                <div class="mt-4 text-center">
+                    <a href="./assests/Alex Gomez Resume 2025 Q3.pdf" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-[#4C6444] transition-colors duration-300 shadow-lg">
+                        Download Resume PDF
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -54,10 +71,11 @@
         </div>
     </section>
 
-    <section id="lab-tracking" class="py-24" style="background-color: #58504b;">
+    <section id="healthcare-intelligence" class="py-24" style="background-color: #58504b;">
         <div class="container mx-auto max-w-4xl px-6">
-            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Clinical Trials Lab tracking Project (Coming Soon!)</h2>
-            <p class="text-xl mb-8 text-deep-brown leading-relaxed">The Clinical Trials Lab Tracking Project leverages AI to automate the extraction and organization of lab report data into a centralized database. This system provides investigators with instant access to subject lab values, while automated checks flag out-of-range results according to protocol, enhancing subject safety and streamlining data review. This technology is invaluable for clinical trials companies, as it significantly improves data accuracy, accelerates review processes, and ensures timely identification of potential safety concerns, ultimately contributing to more efficient and reliable trial outcomes.</p>
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Healthcare Intelligence Hub</h2>
+            <p class="text-xl mb-8 text-deep-brown leading-relaxed">An AI-powered knowledge management platform that combines authoritative healthcare sources (FDA, JAMA, medical journals) with personally curated social media accounts, creating a comprehensive intelligence system tailored to your needs. The platform securely maintains corporate documents including SOPs, protocols, and regulatory guidelines, then leverages AI to provide contextually relevant feedback by synthesizing insights across all these sources. Ideal for clinical trial and hospital settings, this system transforms scattered information into actionable intelligence, ensuring compliance, accelerating decision-making, and keeping teams aligned with both industry standards and internal procedures.</p>
+            <a href="https://blaqhole.info/sample" target="_blank" class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">View Project</a>
         </div>
     </section>
 
