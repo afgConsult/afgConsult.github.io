@@ -12,6 +12,40 @@
         .tan { background-color: #E8D5C4; }
         .text-tan { color: #E8D5C4; }
         .text-deep-brown { color: #C3B091; }  /* Changed to khaki */
+        
+        /* Mobile Navigation */
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #C3B091;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .pdf-container {
+                height: 500px !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-tan text-dark-green transition-all">
@@ -20,10 +54,28 @@
     <nav class="dark-green p-4 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
-            <ul class="flex space-x-6">
+            
+            <!-- Desktop Menu -->
+            <ul class="desktop-menu flex space-x-6">
                 <li><a href="#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
-                <li><a href="#quality-report" class="text-deep-brown hover:text-hunter-green">Clinical Trials Quality Project</a></li>
-                <li><a href="#healthcare-intelligence" class="text-deep-brown hover:text-hunter-green">Healthcare Intelligence Hub</a></li>
+                <li><a href="#quality-report" class="text-deep-brown hover:text-hunter-green">Quality Project</a></li>
+                <li><a href="#healthcare-intelligence" class="text-deep-brown hover:text-hunter-green">Intelligence Hub</a></li>
+            </ul>
+            
+            <!-- Mobile Hamburger -->
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu mt-4">
+            <ul class="space-y-2">
+                <li><a href="#resume" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Resume</a></li>
+                <li><a href="#quality-report" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Quality Project</a></li>
+                <li><a href="#healthcare-intelligence" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Intelligence Hub</a></li>
             </ul>
         </div>
     </nav>
@@ -44,9 +96,9 @@
             
             <!-- Embedded PDF Viewer -->
             <div class="bg-tan rounded-lg shadow-2xl p-4 relative">
-                <div class="w-full" style="height: 900px;">
+                <div class="w-full pdf-container" style="height: 900px;">
                     <iframe 
-                        src="./assests/Alex Gomez Resume 2025 Q3.pdf#view=FitH" 
+                        src="./assests/Alex Gomez Resume 2026 Q1.pdf#view=FitH" 
                         class="w-full h-full rounded-lg border-2 border-[#102820]"
                         type="application/pdf"
                         title="Alex Francisco Gomez Resume">
@@ -55,9 +107,10 @@
                 
                 <!-- Download Button -->
                 <div class="mt-4 text-center">
-                    <a href="./assests/Alex Gomez Resume 2025 Q3.pdf" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-[#4C6444] transition-colors duration-300 shadow-lg">
+                    <a href="./assests/Alex Gomez Resume 2026 Q1.pdf" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-[#4C6444] transition-colors duration-300 shadow-lg">
                         Download Resume PDF
                     </a>
+                    <p class="text-sm text-[#102820] mt-2 md:hidden">For best viewing on mobile, please download the PDF</p>
                 </div>
             </div>
         </div>
@@ -83,6 +136,13 @@
     <footer class="dark-green py-6 text-center text-tan">
         <p>&copy; 2025 Alex Francisco Gomez. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+    </script>
 
 </body>
 </html>
