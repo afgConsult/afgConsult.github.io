@@ -20,12 +20,22 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: #102820;
+            background-color: #4C6444;
             padding: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
         }
         .mobile-menu.active {
             display: block;
+        }
+        .mobile-menu a {
+            color: #E8D5C4;
+            font-weight: 500;
+        }
+        .mobile-menu a:hover {
+            color: #C3B091;
+            background-color: rgba(16, 40, 32, 0.3);
+            border-radius: 4px;
         }
         
         /* Hamburger Menu */
@@ -80,9 +90,9 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu">
             <ul class="space-y-2">
-                <li><a href="#resume" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Resume</a></li>
-                <li><a href="#quality-report" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Quality Project</a></li>
-                <li><a href="#healthcare-intelligence" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Intelligence Hub</a></li>
+                <li><a href="#resume" class="block py-2 px-2" onclick="toggleMenu()">Resume</a></li>
+                <li><a href="#quality-report" class="block py-2 px-2" onclick="toggleMenu()">Quality Project</a></li>
+                <li><a href="#healthcare-intelligence" class="block py-2 px-2" onclick="toggleMenu()">Intelligence Hub</a></li>
             </ul>
         </div>
     </nav>
