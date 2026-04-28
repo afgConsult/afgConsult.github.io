@@ -16,6 +16,13 @@
         /* Mobile Navigation */
         .mobile-menu {
             display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #102820;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .mobile-menu.active {
             display: block;
@@ -37,7 +44,7 @@
         
         @media (max-width: 768px) {
             .desktop-menu {
-                display: none;
+                display: none !important;
             }
             .hamburger {
                 display: flex;
@@ -51,7 +58,7 @@
 <body class="bg-tan text-dark-green transition-all">
 
     <!-- Navigation -->
-    <nav class="dark-green p-4 shadow-lg">
+    <nav class="dark-green p-4 shadow-lg relative">
         <div class="container mx-auto flex justify-between items-center">
             <a href="#home" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
             
@@ -71,7 +78,7 @@
         </div>
         
         <!-- Mobile Menu -->
-        <div class="mobile-menu mt-4">
+        <div class="mobile-menu">
             <ul class="space-y-2">
                 <li><a href="#resume" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Resume</a></li>
                 <li><a href="#quality-report" class="block text-deep-brown hover:text-hunter-green py-2" onclick="toggleMenu()">Quality Project</a></li>
