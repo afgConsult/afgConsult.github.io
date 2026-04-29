@@ -52,6 +52,39 @@
             transition: 0.3s;
         }
         
+        /* Gallery styles */
+        .gallery-container { display: none; }
+        .gallery-container.active { display: block; }
+        .gallery-img { max-height: 800px; }
+        .gallery-btn {
+            background-color: rgba(16, 40, 32, 0.7);
+            color: #C3B091;
+            padding: 12px 20px;
+            border: 2px solid #C3B091;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .gallery-btn:hover {
+            background-color: #C3B091;
+            color: #102820;
+        }
+        .nav-arrow {
+            background-color: rgba(16, 40, 32, 0.7);
+            color: #C3B091;
+            border: none;
+            font-size: 2rem;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            line-height: 1;
+        }
+        .nav-arrow:hover { background-color: #C3B091; color: #102820; }
+        .gallery-indicator { color: #C3B091; font-size: 1.1rem; font-weight: 500; }
+        
         @media (max-width: 768px) {
             .desktop-menu {
                 display: none !important;
@@ -110,15 +143,26 @@
         <div class="container mx-auto px-6" style="max-width: 1600px;">
             <h2 class="text-4xl font-bold mb-8 text-deep-brown max-w-4xl mx-auto">Sample Report</h2>
             <p class="text-xl text-deep-brown mb-8 leading-relaxed max-w-4xl mx-auto">See below for report description. (Disclaimer: The report utlizes sample data and is not confidential.)</p>
-            <div class="bg-[#102820] p-8 rounded-lg shadow-lg mx-auto">
+            <div class="text-center mb-6">
+                <button id="toggleViewBtn" class="gallery-btn" onclick="toggleView()">View as Gallery</button>
+            </div>
+            <div id="powerbi-view" class="bg-[#102820] p-8 rounded-lg shadow-lg mx-auto">
                 <iframe 
                     title="SampleReport" 
                     width="100%" 
                     height="800" 
-                    src="https://app.powerbi.com/reportEmbed?reportId=9009f170-8fb3-4c02-91e6-9955a390eeb5&autoAuth=true&ctid=2a144b72-f239-42d4-8c0e-6f0f17c48e33" 
+                    src="https://app.powerbi.com/groups/me/reports/4220dd09-b74e-405d-877d-3caf3ecbe86e/99af97b957a89e804607?redirectedFromSignup=1&experience=power-bi" 
                     allowFullScreen="true"
                     class="shadow-lg">
                 </iframe>
+            </div>
+            <div id="gallery-view" class="gallery-container bg-[#102820] p-8 rounded-lg shadow-lg mx-auto text-center">
+                <div class="flex items-center justify-center gap-4">
+                    <button class="nav-arrow" onclick="prevImage()" title="Previous">&#8592;</button>
+                    <img id="galleryImage" class="gallery-img rounded-lg shadow-lg" src="assests/Findings.png" alt="Report Screenshot" style="max-width: 100%;">
+                    <button class="nav-arrow" onclick="nextImage()" title="Next">&#8594;</button>
+                </div>
+                <p class="gallery-indicator mt-4" id="galleryIndicator">1 of 3</p>
             </div>
         </div>
     </section>
@@ -180,6 +224,43 @@
         function toggleMenu() {
             const mobileMenu = document.querySelector('.mobile-menu');
             mobileMenu.classList.toggle('active');
+        }
+
+        const images = [
+            'assests/Findings.png',
+            'assests/CheckIn.png',
+            'assests/Visit Summary.png'
+        ];
+        let currentIndex = 0;
+
+        function toggleView() {
+            const powerbiView = document.getElementById('powerbi-view');
+            const galleryView = document.getElementById('gallery-view');
+            const toggleBtn = document.getElementById('toggleViewBtn');
+            if (powerbiView.style.display === 'none') {
+                powerbiView.style.display = 'block';
+                galleryView.classList.remove('active');
+                toggleBtn.textContent = 'View as Gallery';
+            } else {
+                powerbiView.style.display = 'none';
+                galleryView.classList.add('active');
+                toggleBtn.textContent = 'View Power BI Report';
+            }
+        }
+
+        function updateGallery() {
+            document.getElementById('galleryImage').src = images[currentIndex];
+            document.getElementById('galleryIndicator').textContent = (currentIndex + 1) + ' of ' + images.length;
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateGallery();
+        }
+
+        function prevImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateGallery();
         }
     </script>
 </body>
