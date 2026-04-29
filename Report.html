@@ -12,17 +12,86 @@
         .tan { background-color: #E8D5C4; }
         .text-tan { color: #E8D5C4; }
         .text-deep-brown { color: #C3B091; }
+        
+        /* Mobile Navigation */
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #102820;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+        .mobile-menu a {
+            color: #E8D5C4;
+            font-weight: 500;
+        }
+        .mobile-menu a:hover {
+            color: #C3B091;
+            background-color: rgba(16, 40, 32, 0.3);
+            border-radius: 4px;
+        }
+        
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #C3B091;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-menu {
+                display: none !important;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .pdf-container {
+                height: 500px !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-tan text-dark-green transition-all">
     <!-- Navigation -->
-    <nav class="dark-green p-4 shadow-lg">
+    <nav class="dark-green p-4 shadow-lg relative">
         <div class="container mx-auto flex justify-between items-center">
             <a href="index.html" class="text-deep-brown text-2xl font-semibold">Alex Francisco Gomez</a>
-            <ul class="flex space-x-6">
+            
+            <!-- Desktop Menu -->
+            <ul class="desktop-menu flex space-x-6">
                 <li><a href="index.html#resume" class="text-deep-brown hover:text-hunter-green">Resume</a></li>
-                <li><a href="index.html#quality-report" class="text-deep-brown hover:text-hunter-green">Clinical Trials Quality Project</a></li>
-                <li><a href="index.html#lab-tracking" class="text-deep-brown hover:text-hunter-green">Lab Tracking Project</a></li>
+                <li><a href="index.html#quality-report" class="text-deep-brown hover:text-hunter-green">Quality Project</a></li>
+                <li><a href="index.html#healthcare-intelligence" class="text-deep-brown hover:text-hunter-green">Intelligence Hub</a></li>
+            </ul>
+            
+            <!-- Mobile Hamburger -->
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu">
+            <ul class="space-y-2">
+                <li><a href="index.html#resume" class="block py-2 px-2" onclick="toggleMenu()">Resume</a></li>
+                <li><a href="index.html#quality-report" class="block py-2 px-2" onclick="toggleMenu()">Quality Project</a></li>
+                <li><a href="index.html#healthcare-intelligence" class="block py-2 px-2" onclick="toggleMenu()">Intelligence Hub</a></li>
             </ul>
         </div>
     </nav>
@@ -106,5 +175,12 @@
     <footer class="dark-green py-6 text-center text-tan">
         <p>&copy; 2025 Alex Francisco Gomez. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            mobileMenu.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
