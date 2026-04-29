@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex Francisco Gomez - Portfolio</title>
+    <title>Clinical Quality Report Project - Alex Francisco Gomez</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom Color Palette */
@@ -11,7 +11,7 @@
         .hunter-green { background-color: #4C6444; }
         .tan { background-color: #E8D5C4; }
         .text-tan { color: #E8D5C4; }
-        .text-deep-brown { color: #C3B091; }  /* Changed to khaki */
+        .text-deep-brown { color: #C3B091; }
         .bg-gray-1 { background-color: #504b47; }
         .bg-gray-2 { background-color: #423e3a; }
         .bg-gray-3 { background-color: #58504b; }
@@ -23,7 +23,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            background-color: #102820;
+            background-color: #4C6444;
             padding: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             z-index: 1000;
@@ -55,6 +55,36 @@
             transition: 0.3s;
         }
         
+        /* Toggle Feature Styles */
+        .feature-toggle {
+            display: none;
+        }
+        .feature-toggle.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Gallery/Toggle Button styles */
+        .gallery-btn {
+            background-color: rgba(16, 40, 32, 0.7);
+            color: #C3B091;
+            padding: 12px 20px;
+            border: 2px solid #C3B091;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .gallery-btn:hover {
+            background-color: #C3B091;
+            color: #102820;
+        }
+        
         @media (max-width: 768px) {
             .desktop-menu {
                 display: none !important;
@@ -62,8 +92,9 @@
             .hamburger {
                 display: flex;
             }
-            .pdf-container {
-                height: 500px !important;
+            .gallery-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.875rem;
             }
         }
     </style>
@@ -103,13 +134,11 @@
     <!-- Main Section -->
     <header class="dark-green p-16 text-center w-full">
         <div class="container mx-auto max-w-4xl">
-            
             <h1 class="text-5xl font-bold mb-6 text-deep-brown">Clinical Quality Report Project</h1>
-            
         </div>
     </header>
 
-    <!-- Data Journey Section -->
+    <!-- Overview Section -->
     <section id="data-journey" class="py-24 bg-gray-1">
         <div class="container mx-auto max-w-4xl px-6">
             <h2 class="text-4xl font-bold mb-8 text-deep-brown">Quality Data System (QDS)</h2>
@@ -128,32 +157,126 @@
                     It provides metrics that allow management to review performance and identify areas for improvement, enabling better 
                     decision-making based on data-driven insights.
                 </p>
-                <p class="text-xl text-deep-brown leading-relaxed">
-                    In building this, I ensured the report is comprehensive and user-friendly, making it easier for all teams to 
-                    collaborate and stay on top of their tasks. The end result is a system that streamlines the review process, 
-                    improves accountability, and supports continuous improvement.
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- Report Section -->
-    <section id="report" class="py-24 bg-gray-2">
-        <div class="container mx-auto max-w-4xl px-6">
-            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Quality Control, Clinical, & Managerial Interface</h2>
-            <p class="text-xl mb-8 text-deep-brown leading-relaxed">View interface used by Quality Control and Clinical Staff for reviewing pending visits and finding details.</p>
-            <p class="text-xl text-deep-brown leading-relaxed">Managerial samples have been included for presentation purposes.</p>
-            <br>
-            <a href="./Report.html" class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">View Report</a>
+    <!-- Report Features Section -->
+    <section class="py-24 bg-gray-2">
+        <div class="container mx-auto max-w-6xl px-6">
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Report Interfaces</h2>
+            <p class="text-xl mb-8 text-deep-brown leading-relaxed">
+                View the different interfaces used by Quality Control and Clinical Staff. The report utilizes custom DAX calculations and measures to track visits, findings, and performance metrics in real-time.
+            </p>
+            
+            <!-- Toggle Buttons -->
+            <div class="text-center mb-8 flex flex-wrap justify-center gap-4">
+                <button onclick="toggleFeature('checkin')" class="gallery-btn">Check-In Interface</button>
+                <button onclick="toggleFeature('findings')" class="gallery-btn">Findings Interface</button>
+                <button onclick="toggleFeature('summary')" class="gallery-btn">Visit Summary</button>
+            </div>
+
+            <!-- Feature Displays -->
+            <div id="checkin-feature" class="feature-toggle active">
+                <h3 class="text-3xl font-bold mb-4 text-deep-brown">Check-In Interface</h3>
+                <p class="text-lg mb-6 text-deep-brown">Track and manage visit check-ins for quality control review.</p>
+                <div class="flex justify-center mb-6">
+                    <img src="./assests/CheckIn.png" alt="Check-In Interface" class="rounded-lg shadow-2xl max-w-full">
+                </div>
+                
+                <!-- Download Links -->
+                <div class="text-center mt-6 flex flex-wrap justify-center gap-4">
+                    <a href="./assests/SampleDB.xlsx" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Sample Database (Excel)
+                    </a>
+                    <a href="./assests/SampleReport.pbix" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Power BI Report (.pbix)
+                    </a>
+                </div>
+            </div>
+
+            <div id="findings-feature" class="feature-toggle">
+                <h3 class="text-3xl font-bold mb-4 text-deep-brown">Findings Interface</h3>
+                <p class="text-lg mb-6 text-deep-brown">Monitor and resolve quality control findings efficiently.</p>
+                <div class="flex justify-center mb-6">
+                    <img src="./assests/Findings.png" alt="Findings Interface" class="rounded-lg shadow-2xl max-w-full">
+                </div>
+                
+                <!-- Download Links -->
+                <div class="text-center mt-6 flex flex-wrap justify-center gap-4">
+                    <a href="./assests/SampleDB.xlsx" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Sample Database (Excel)
+                    </a>
+                    <a href="./assests/SampleReport.pbix" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Power BI Report (.pbix)
+                    </a>
+                </div>
+            </div>
+
+            <div id="summary-feature" class="feature-toggle">
+                <h3 class="text-3xl font-bold mb-4 text-deep-brown">Visit Summary</h3>
+                <p class="text-lg mb-6 text-deep-brown">Comprehensive overview of visit status and metrics.</p>
+                <div class="flex justify-center mb-6">
+                    <img src="./assests/Visit Summary.png" alt="Visit Summary" class="rounded-lg shadow-2xl max-w-full">
+                </div>
+                
+                <!-- Download Links -->
+                <div class="text-center mt-6 flex flex-wrap justify-center gap-4">
+                    <a href="./assests/SampleDB.xlsx" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Sample Database (Excel)
+                    </a>
+                    <a href="./assests/SampleReport.pbix" download class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">
+                        Download Power BI Report (.pbix)
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Calculations Section -->
-    <section id="calculations" class="py-24 bg-gray-3">
+    <!-- Report Features Description Section -->
+    <section class="py-24 bg-gray-1">
         <div class="container mx-auto max-w-4xl px-6">
-            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Calculations & Measures</h2>
-            <p class="text-xl mb-8 text-deep-brown leading-relaxed">Explore the detailed calculations and metrics used to measure quality control performance and efficiency.</p>
-            <a href="./Calcs.html" class="inline-block bg-[#102820] text-tan py-3 px-8 rounded-lg hover:bg-hunter-green transition-colors duration-300 shadow-lg">View Calculations</a>
+            <h2 class="text-4xl font-bold mb-8 text-deep-brown">Report Features</h2>
+            <p class="text-xl text-deep-brown mb-8 leading-relaxed">The report is used by staff for clinical operations and quality control, with managerial metrics attached for presentation purposes. The report contains:</p>
+            <div class="space-y-12 text-deep-brown">
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Findings Directory (1 of 3)</h3>
+                    <p class="mb-4 text-xl">Tracks findings details such as the actual finding, the response, and current status.</p>
+                    <ul class="list-disc pl-8 space-y-2 text-lg">
+                        <li>Provides comprehensive tracking of all findings throughout their lifecycle</li>
+                        <li>Displays the actual finding details for complete transparency</li>
+                        <li>Shows responses from clinical staff to address findings</li>
+                        <li>Tracks current status to monitor progress and resolution</li>
+                        <li>Allows for staff to review findings before monitor visits or audit prep</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Chart Directory (2 of 3)</h3>
+                    <p class="mb-4 text-xl">Tracks charts checked in, when QC starts, and when QC finishes.</p>
+                    <ul class="list-disc pl-8 space-y-2 text-lg">
+                        <li>Monitors chart check-in process to ensure all required documentation is received</li>
+                        <li>Records QC start times to track when quality control review begins</li>
+                        <li>Documents QC completion times to measure review duration</li>
+                        <li>Provides visibility into the quality control workflow and timing</li>
+                        <li>Enables tracking of chart processing efficiency</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Visits Summary (3 of 3)</h3>
+                    <p class="mb-4 text-xl">Tracks turnaround time (TAT), staff performance, and more.</p>
+                    <ul class="list-disc pl-8 space-y-2 text-lg">
+                        <li>Measures turnaround time for various processes and workflows</li>
+                        <li>Evaluates staff performance metrics and productivity indicators</li>
+                        <li>Provides comprehensive visit statistics and analytics</li>
+                        <li>Tracks key performance indicators for operational efficiency</li>
+                        <li>Enables management oversight of clinical operations</li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
     </section>
 
@@ -163,9 +286,36 @@
     </footer>
 
     <script>
+        // Mobile menu toggle
         function toggleMenu() {
             const mobileMenu = document.querySelector('.mobile-menu');
             mobileMenu.classList.toggle('active');
+        }
+
+        // Feature toggle functionality
+        let currentFeature = 'checkin'; // Default to first feature
+        
+        function toggleFeature(featureName) {
+            const featureElement = document.getElementById(featureName + '-feature');
+            
+            // If clicking the same feature, just close it
+            if (currentFeature === featureName) {
+                featureElement.classList.remove('active');
+                currentFeature = null;
+                return;
+            }
+            
+            // Hide all features
+            document.querySelectorAll('.feature-toggle').forEach(feature => {
+                feature.classList.remove('active');
+            });
+            
+            // Show selected feature
+            featureElement.classList.add('active');
+            currentFeature = featureName;
+            
+            // Smooth scroll to the feature
+            featureElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
 </body>
